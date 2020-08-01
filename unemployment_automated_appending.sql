@@ -1,5 +1,4 @@
-
-create or replace table myproject.mydataset.unemployment_spain as 
+create or replace table project-test-3105.gdelt_info_filtering.unemployment_spain as 
 SELECT
   -- este select está solo para usar el where al final y eliminar los null que se generan en news_in_Spain
   *
@@ -15,8 +14,8 @@ FROM (
         (0)] AS FLOAT64),2) AS Sentiment,
     (CASE
 
-        WHEN V2Themes LIKE "%UNEMPLOYMENT%" THEN "unemployment"
-
+        WHEN V2Themes LIKE "%UNEMPLOYMENT%" THEN "tagged by Gdelt as unemployment-related"
+        WHEN LOWER(DocumentIdentifier) LIKE "%desempleo%" THEN "unemployment explicitly found in the article" 
     END
       ) AS news_in_Spain,
 
@@ -33,6 +32,7 @@ FROM (
         spanish_newspapers
       FROM
       -- I created my own media tables to filter by country newspapers
-        `myproject.mydataset.spanish_newspapers_SourceCommonName_160620`)))
+        `project-test-3105.gdelt_info_filtering.spanish_newspapers_SourceCommonName_160620`)))
 WHERE
   news_in_Spain IS NOT NULL
+  
